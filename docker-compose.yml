@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: beinghuman-db
+    environment:
+      POSTGRES_USER: beinghuman
+      POSTGRES_PASSWORD: beinghuman
+      POSTGRES_DB: beinghuman
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U beinghuman"]
+      interval: 3s
+      retries: 10
+
+volumes:
+  pgdata:

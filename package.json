@@ -1,0 +1,15 @@
+{
+  "name": "beinghuman-database",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "migrate": "node scripts/migrate.mjs",
+    "seed": "node scripts/migrate.mjs --seed",
+    "reset": "docker compose down -v && docker compose up -d --wait && node scripts/migrate.mjs --seed"
+  },
+  "dependencies": {
+    "pg": "^8.23.0"
+  }
+}

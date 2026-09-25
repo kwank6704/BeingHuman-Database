@@ -23,6 +23,25 @@ npm run seed       # apply migrations + demo data (user "demo")
 `npm run migrate` applies new migrations only. `npm run reset` wipes the volume and starts over.
 Set `DATABASE_URL` to point at another server.
 
+## Deploy ฐานข้อมูลบน Neon (Vercel)
+
+1. สร้างฐานข้อมูล Neon จากโปรเจกต์ BeingHuman-BE บน Vercel (แท็บ **Storage → Create Database → Neon**)
+2. ใน Vercel → BeingHuman-BE → **Settings → Environment Variables** คัดลอกค่า **`DATABASE_URL_UNPOOLED`**
+3. รันจากเครื่องตัวเอง (PowerShell):
+
+```powershell
+cd BeingHuman-Database
+npm install
+$env:DATABASE_URL = "วาง DATABASE_URL_UNPOOLED ที่คัดลอกมา"
+npm run seed
+```
+
+เห็น `applied 001_init.sql` แปลว่าสำเร็จ — `npm run seed` ใส่รูปตัวอย่างของผู้ใช้ `demo` ด้วย ถ้าไม่ต้องการใช้ `npm run migrate` แทน
+(ใน Git Bash / macOS ใช้ `DATABASE_URL="..." npm run seed` บรรทัดเดียว)
+
+- Vercel **ไม่รัน migration ให้** — ถ้าเพิ่มไฟล์ใน `migrations/` ภายหลัง ต้องรัน `npm run migrate` แบบนี้อีกครั้ง
+- ดูข้อมูลบน Neon ใน DBeaver ได้: PostgreSQL connection ใส่ Host / Database / User / Password จากหน้า Neon (ปุ่ม **Connect**) และเปิดแท็บ **SSL** → SSL mode = `require`
+
 ## Schema
 
 - `users` — one per elder; `external_id` is the LIFF user id (or a device id before LINE login).
